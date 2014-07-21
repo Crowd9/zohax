@@ -80,8 +80,12 @@ module Zohax
     private
 
     def parse_raw_get(raw, entry)
+      return raw if not raw.is_a?(Hash) or raw['response'].nil? or raw['response']['error'].present?
       return [] if raw['response']['result'].nil?
-      rows = raw['response']['result'][entry]['row'] 
+
+      return raw['response']['result'] unless raw['response']['result'].has_key?(entry)
+
+      rows = raw['response']['result'][entry]['row']
       rows = [rows] unless rows.class == Array
       rows.map {|i|
         raw_to_hash i['FL']
@@ -94,8 +98,10 @@ module Zohax
     end
     
     def parse_raw_post(raw)
+      return raw if not raw.is_a?(Hash) or raw['response'].nil? or raw['response']['error'].present?
       return [] if raw['response']['result'].nil?
-      record = raw['response']['result']['recorddetail'] 
+
+      record = raw['response']['result']['recorddetail']
       raw_to_hash record['FL']
     end
 
