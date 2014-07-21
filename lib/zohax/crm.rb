@@ -29,6 +29,14 @@ module Zohax
       record = @api.call('Leads', 'updateRecords', {:xmlData => xmlData, :newFormat => 1, :id => record_id}, :post)
     end
 
+    def remove_lead(id)
+      @api.call('Leads', 'deleteRecords', {:id => id}, :get)
+    end
+
+    def get_lead_fields(type = nil)
+      @api.call('Leads', 'getFields', {:type => type}, :get)
+    end
+
     private
 
     def parse_data(data, entry)
